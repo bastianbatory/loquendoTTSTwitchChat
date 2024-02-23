@@ -11,9 +11,6 @@ public class CPHInline
     {
         try
         {
-            // Parámetros
-            //Dictionary<string, object> args = new Dictionary<string, object>(); // Asumiendo que args está definido en algún lugar
-
             string toC = args["rawInput"].ToString();
             string voz = args["input0"].ToString();
             string user = args["user"].ToString();
@@ -27,62 +24,69 @@ public class CPHInline
             string urlJuan = "https://cache-a.oddcast.com/tts/genB.php?EID=2&LID=2&VID=2&TXT=";
             string urlCarmen = "https://cache-a.oddcast.com/tts/genB.php?EID=2&LID=2&VID=1&TXT=";
             string urlEsperanza = "https://cache-a.oddcast.com/tts/genB.php?EID=2&LID=2&VID=6&TXT=";
-            
+            string urlStart = "";
+            string urlEnd = "&EXT=mp3&FNAME=&ACC=15679&SceneID=2701949&HTTP_ERR=&cache_flag=3";
+            //string urlEnd = args["urlEnd"].ToString();
+            //omite los mensajes 
             if (user == broadcastUser)
             {
-            	return false;
+                return false;
             }
-            
-             
-            //CPH.SendMessage(textCommand, false);
-            string urlStart = "";
+
             if (voz == "--carlos")
             {
-				urlStart = urlCarlos;
-				textCommand = textCommand.Replace("--carlos", "");
-			}
-			else if (voz == "--jorge")
-			{
-				urlStart = urlJorge;
-				textCommand = textCommand.Replace("--jorge", "");
-			}
-			else if (voz == "--diego")
-			{
-				urlStart = urlDiego;
-				textCommand = textCommand.Replace("--diego", "");
-			}
-			else if (voz == "--javier")
-			{
-				urlStart = urlJavier;
-				textCommand = textCommand.Replace("--javier", "");
-			}
-			else if (voz == "--juan")
-			{
-				urlStart = urlJuan;
-				textCommand = textCommand.Replace("--juan", "");
-			}
+                urlStart = urlCarlos;
+                textCommand = textCommand.Replace("--carlos", "");
+            }
+            else if (voz == "--jorge")
+            {
+                urlStart = urlJorge;
+                textCommand = textCommand.Replace("--jorge", "");
+            }
+            else if (voz == "--diego")
+            {
+                urlStart = urlDiego;
+                textCommand = textCommand.Replace("--diego", "");
+            }
+            else if (voz == "--javier")
+            {
+                urlStart = urlJavier;
+                textCommand = textCommand.Replace("--javier", "");
+            }
+            else if (voz == "--juan")
+            {
+                urlStart = urlJuan;
+                textCommand = textCommand.Replace("--juan", "");
+            }
             else if (voz == "--carmen")
-			{
-				urlStart = urlCarmen;
-				textCommand = textCommand.Replace("--carmen", "");
-			}
+            {
+                urlStart = urlCarmen;
+                textCommand = textCommand.Replace("--carmen", "");
+            }
             else if (voz == "--esperanza")
-			{
-				urlStart = urlEsperanza;
-				textCommand = textCommand.Replace("--esperanza", "");
-			}
-			else
-			{
-				var array = new List<string> { urlCarlos, urlJorge, urlDiego, urlJavier, urlJuan, urlCarmen, urlEsperanza };
-				Random random = new Random();
-				int i = random.Next(array.Count);
-				urlStart = array[i];
-			}
+            {
+                urlStart = urlEsperanza;
+                textCommand = textCommand.Replace("--esperanza", "");
+            }
+            else
+            {
+                var array = new List<string>
+                {
+                    urlCarlos,
+                    urlJorge,
+                    urlDiego,
+                    urlJavier,
+                    urlJuan,
+                    urlCarmen,
+                    urlEsperanza
+                };
+                Random random = new Random();
+                int i = random.Next(array.Count);
+                urlStart = array[i];
+            }
 
-            string urlEnd = args["urlEnd"].ToString();
             string url = urlStart + textCommand + urlEnd;
             //CPH.SendMessage(url, false);
-
             using (HttpClient httpClient = new HttpClient())
             {
                 HttpResponseMessage response = httpClient.GetAsync(url).Result;
@@ -90,7 +94,6 @@ public class CPHInline
                 {
                     string randomFileName = Path.GetRandomFileName().Replace(".", "") + ".mp3"; // Generar un nombre de archivo aleatorio con extensión .mp3
                     string filePath = Path.Combine(Directory.GetCurrentDirectory(), randomFileName); // Ruta completa del archivo
-
                     using (Stream stream = response.Content.ReadAsStreamAsync().Result)
                     using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
@@ -103,21 +106,12 @@ public class CPHInline
                     double durationd = mediaInfo.duration;
                     string durationf = durationd.ToString();
                     string duration = durationf.Replace(",", "");
-
-                    Console.WriteLine($"Duración del audio: {duration} segundos");
-
-                    // Enviar el mensaje con la ruta completa del archivo
-                   // CPH.SendMessage(user, false);
-                    
-                    CPH.SetArgument("duracion", duration);
-
-                    // Reproducir el audio
+                    CPH.SetArgument("duracion", duration); //En streamer.bot agregar una sub-action delay, y el delay dejarlo en %duracion%
                     WMPLib.WindowsMediaPlayer player = new WMPLib.WindowsMediaPlayer();
                     player.URL = filePath;
-                    player.controls.play();
-                    
+                    player.controls.play(); // reproduce el archivo
                     Console.WriteLine("Archivo de audio descargado exitosamente.");
-                    File.Delete(filePath);
+                    File.Delete(filePath); // borra el archivo creado
                     return true;
                 }
                 else
