@@ -2,7 +2,7 @@
 2. Create an Execute Code Sub-action and paste the .cs code of this project<br />
 3. In References of the code Add reference from file and select Interop.WMPLib.dll library<br />
 4. Click FindRefs and Compile<br />
-5. Add Sub-action Core -> Delay and set it to %duracion%<br />
+5. Add Sub-action Core -> Delay and set it to %duracion%<br /><br />
 Done<br />
 <br />
 
