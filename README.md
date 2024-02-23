@@ -5,4 +5,5 @@
 5. Add Sub-action Core -> Delay and set it to %duracion%<br />
 Done<br />
 <br />
-![image](https://github.com/bastianbatory/loquendoTTSTwtchChat/assets/29646707/0eb00a23-ff94-478f-bb12-9e4fab7a7c6b)
+
+![image](https://github.com/bastianbatory/loquendoTTSTwtchChat/assets/29646707/505095cb-08ba-4c2d-bf3b-98d532e1454c)
