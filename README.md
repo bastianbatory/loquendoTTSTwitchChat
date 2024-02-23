@@ -1,4 +1,4 @@
-This is a C# Code that get Twtich Chat messages and read it with Spanish Loquendo TTS most popular voices<br />
+This is a C# Code to compile in Streamer.bot that get Twtich Chat messages and read it with Spanish Loquendo TTS most popular voices<br />
 <br />
 1. Copy Interop.WMPLib.dll into your Streamer.bot main folder<br />
 2. Create an Execute Code Sub-action and paste the tts.cs code of this project<br />
