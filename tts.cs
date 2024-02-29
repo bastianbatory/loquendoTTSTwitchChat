@@ -31,7 +31,7 @@ public class CPHInline
             string urlEsperanza = "https://cache-a.oddcast.com/tts/genB.php?EID=2&LID=2&VID=5&TXT=";
             string urlStart = "";
 
-            if (user == broadcastUser)
+            if (user == broadcastUser || user == "StreamElements" || user == "Nightbot")
             {
                 return false;
             }
